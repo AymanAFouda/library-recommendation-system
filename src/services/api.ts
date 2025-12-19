@@ -1,5 +1,7 @@
 import { Book, ReadingList, Review, Recommendation } from '@/types';
 import { mockBooks, mockReadingLists } from './mockData';
+import { fetchAuthSession } from 'aws-amplify/auth';
+
 
 /**
  * ============================================================================
@@ -41,85 +43,35 @@ import { mockBooks, mockReadingLists } from './mockData';
  */
 
 // TODO: Uncomment this after deploying API Gateway (Week 2, Day 4)
-// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
 
-/**
- * TODO: Implement this function in Week 3, Day 4
- *
- * This function gets the JWT token from Cognito and adds it to API requests.
- *
- * Implementation:
- * 1. Import: import { fetchAuthSession } from 'aws-amplify/auth';
- * 2. Get session: const session = await fetchAuthSession();
- * 3. Extract token: const token = session.tokens?.idToken?.toString();
- * 4. Return headers with Authorization: Bearer {token}
- *
- * See IMPLEMENTATION_GUIDE.md - Week 3, Day 5-7 for complete code.
- */
-// async function getAuthHeaders() {
-//   try {
-//     const session = await fetchAuthSession();
-//     const token = session.tokens?.idToken?.toString();
-//     return {
-//       'Authorization': `Bearer ${token}`,
-//       'Content-Type': 'application/json'
-//     };
-//   } catch {
-//     return {
-//       'Content-Type': 'application/json'
-//     };
-//   }
-// }
 
-/**
- * Get all books from the catalog
- *
- * TODO: Replace with real API call in Week 2, Day 3-4
- *
- * Implementation steps:
- * 1. Deploy Lambda function: library-get-books (see IMPLEMENTATION_GUIDE.md)
- * 2. Create API Gateway endpoint: GET /books
- * 3. Uncomment API_BASE_URL at top of file
- * 4. Replace mock code below with:
- *
- * const response = await fetch(`${API_BASE_URL}/books`);
- * if (!response.ok) throw new Error('Failed to fetch books');
- * return response.json();
- *
- * Expected response: Array of Book objects from DynamoDB
- */
-export async function getBooks(): Promise<Book[]> {
-  // TODO: Remove this mock implementation after deploying Lambda
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(mockBooks), 500);
-  });
+async function getAuthHeaders() {
+  try {
+    const session = await fetchAuthSession();
+    const token = session.tokens?.idToken?.toString();
+    return {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+  } catch {
+    return {
+      'Content-Type': 'application/json'
+    };
+  }
 }
 
-/**
- * Get a single book by ID
- *
- * TODO: Replace with real API call in Week 2, Day 3-4
- *
- * Implementation steps:
- * 1. Deploy Lambda function: library-get-book (see IMPLEMENTATION_GUIDE.md)
- * 2. Create API Gateway endpoint: GET /books/{id}
- * 3. Replace mock code below with:
- *
- * const response = await fetch(`${API_BASE_URL}/books/${id}`);
- * if (response.status === 404) return null;
- * if (!response.ok) throw new Error('Failed to fetch book');
- * return response.json();
- *
- * Expected response: Single Book object or null if not found
- */
+export async function getBooks(): Promise<Book[]> {
+  const response = await fetch(`${API_BASE_URL}/books`);
+  if (!response.ok) throw new Error('Failed to fetch books');
+  return response.json();
+}
+
 export async function getBook(id: string): Promise<Book | null> {
-  // TODO: Remove this mock implementation after deploying Lambda
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const book = mockBooks.find((b) => b.id === id);
-      resolve(book || null);
-    }, 300);
-  });
+  const response = await fetch(`${API_BASE_URL}/books/${id}`);
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error('Failed to fetch book');
+  return response.json();
 }
 
 /**
@@ -240,73 +192,52 @@ export async function getRecommendations(): Promise<Recommendation[]> {
   });
 }
 
-/**
- * Get user's reading lists
- *
- * TODO: Replace with real API call in Week 2, Day 5-7
- *
- * Implementation steps:
- * 1. Deploy Lambda function: library-get-reading-lists
- * 2. Lambda should query DynamoDB by userId (from Cognito token)
- * 3. Create API Gateway endpoint: GET /reading-lists
- * 4. Add Cognito authorizer (Week 3)
- * 5. Replace mock code below with:
- *
- * const headers = await getAuthHeaders();
- * const response = await fetch(`${API_BASE_URL}/reading-lists`, {
- *   headers
- * });
- * if (!response.ok) throw new Error('Failed to fetch reading lists');
- * return response.json();
- *
- * Expected response: Array of ReadingList objects for the authenticated user
- */
+/*
 export async function getReadingLists(): Promise<ReadingList[]> {
   // TODO: Remove this mock implementation after deploying Lambda
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(mockReadingLists), 500);
+  const headers = await getAuthHeaders();
+  const response = await fetch(`${API_BASE_URL}/reading-lists`, {
+    headers
   });
+  if (!response.ok) throw new Error('Failed to fetch reading lists');
+  return response.json();
+}
+*/
+
+//Alternative function from ChatGPT because the function above gives an error
+export async function getReadingLists(): Promise<ReadingList[]> {
+  const authHeaders = await getAuthHeaders();
+
+  // Build headers object with only string values
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(authHeaders.Authorization ? { Authorization: authHeaders.Authorization } : {}),
+  };
+
+  const response = await fetch(`${API_BASE_URL}/reading-lists`, { headers });
+
+  if (!response.ok) throw new Error('Failed to fetch reading lists');
+  return response.json();
 }
 
-/**
- * Create a new reading list
- *
- * TODO: Replace with real API call in Week 2, Day 5-7
- *
- * Implementation steps:
- * 1. Deploy Lambda function: library-create-reading-list
- * 2. Lambda should generate UUID for id and timestamps
- * 3. Lambda should get userId from Cognito token
- * 4. Create API Gateway endpoint: POST /reading-lists
- * 5. Add Cognito authorizer (Week 3)
- * 6. Replace mock code below with:
- *
- * const headers = await getAuthHeaders();
- * const response = await fetch(`${API_BASE_URL}/reading-lists`, {
- *   method: 'POST',
- *   headers,
- *   body: JSON.stringify(list)
- * });
- * if (!response.ok) throw new Error('Failed to create reading list');
- * return response.json();
- *
- * Expected response: Complete ReadingList object with generated id and timestamps
- */
+//This function had an error so I used ChatGPT to fix it
 export async function createReadingList(
   list: Omit<ReadingList, 'id' | 'createdAt' | 'updatedAt'>
 ): Promise<ReadingList> {
-  // TODO: Remove this mock implementation after deploying Lambda
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const newList: ReadingList = {
-        ...list,
-        id: Date.now().toString(),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      resolve(newList);
-    }, 500);
+  const authHeaders = await getAuthHeaders();
+
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(authHeaders.Authorization ? { Authorization: authHeaders.Authorization } : {}),
+  };
+
+  const response = await fetch(`${API_BASE_URL}/reading-lists`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(list)
   });
+  if (!response.ok) throw new Error('Failed to create reading list');
+  return response.json();
 }
 
 /**
