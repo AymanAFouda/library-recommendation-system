@@ -2,6 +2,13 @@
  * Core type definitions for the Library Recommendation System
  */
 
+export interface BookRecommendation {
+  title: string;
+  author: string;
+  reason: string;
+  confidence: number;
+}
+
 export interface Book {
   id: string;
   title: string;

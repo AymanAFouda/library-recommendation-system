@@ -23,6 +23,7 @@ export function Books() {
     setIsLoading(true);
     try {
       const data = await getBooks();
+      console.log("API DATA", data)
       setBooks(data);
       setFilteredBooks(data);
     } catch (error) {

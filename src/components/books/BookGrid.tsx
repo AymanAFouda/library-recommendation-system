@@ -15,6 +15,7 @@ interface BookGridProps {
  * <BookGrid books={books} />
  */
 export function BookGrid({ books }: BookGridProps) {
+  console.log("Books", books);
   if (books.length === 0) {
     return (
       <div className="text-center py-12">
