@@ -4,6 +4,7 @@ import { Amplify } from 'aws-amplify';
 import './index.css';
 import App from './App.tsx';
 
+//rebuild trigger
 Amplify.configure({
   Auth: {
     Cognito: {
