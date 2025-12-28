@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Button } from '@/components/common/Button';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
-//import { BookGrid } from '@/components/books/BookGrid';
 import { getRecommendations } from '@/services/api';
 import { BookRecommendation } from '@/types';
 import { handleApiError } from '@/utils/errorHandling';
+import toast from 'react-hot-toast';
+
 
 /**
  * Recommendations page component with AI-powered suggestions
@@ -12,7 +13,6 @@ import { handleApiError } from '@/utils/errorHandling';
 export function Recommendations() {
   const [query, setQuery] = useState('');
   const [recommendations, setRecommendations] = useState<BookRecommendation[]>([]);
-  //const [recommendedBooks, setRecommendedBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const exampleQueries = [
@@ -24,7 +24,7 @@ export function Recommendations() {
 
   const handleGetRecommendations = async () => {
     if (!query.trim()) {
-      alert('Please enter a query');
+      toast.error('Please enter a query');
       return;
     }
 
@@ -161,50 +161,6 @@ export function Recommendations() {
                 );
               })}
             </div>
-            
-            {/* Display recommendations with reasons */}
-            {/* 
-            <div className="space-y-6 mb-12">
-              {recommendations.map((rec, index) => {
-                const book = recommendedBooks[index];
-                if (!book) return null;
-
-                return (
-                  <div
-                    key={rec.id}
-                    className="glass-effect rounded-2xl shadow-xl border border-white/20 p-6 hover-glow transition-all duration-300"
-                  >
-                    <div className="flex items-start gap-6">
-                      <img
-                        src={book.coverImage}
-                        alt={book.title}
-                        className="w-28 h-40 object-cover rounded-xl shadow-lg"
-                        onError={(e) => {
-                          e.currentTarget.src = 'https://via.placeholder.com/112x160?text=No+Cover';
-                        }}
-                      />
-                      <div className="flex-1">
-                        <h3 className="text-2xl font-bold text-slate-900 mb-2">{book.title}</h3>
-                        <p className="text-slate-600 mb-3 font-medium">by {book.author}</p>
-                        <p className="text-slate-700 mb-4 leading-relaxed">{rec.reason}</p>
-                        <div className="flex flex-wrap items-center gap-3">
-                          <div className="bg-gradient-to-r from-violet-100 to-indigo-100 px-3 py-1.5 rounded-xl border border-violet-200">
-                            <span className="text-sm text-violet-700 font-semibold">
-                              Confidence: {Math.round(rec.confidence * 100)}%
-                            </span>
-                          </div>
-                          <span className="badge-gradient px-3 py-1.5 text-sm">{book.genre}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <BookGrid books={recommendedBooks} />
-          */}  
-
           </div>
         )}
 

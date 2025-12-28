@@ -7,6 +7,8 @@ import { getReadingLists, createReadingList } from '@/services/api';
 import { ReadingList } from '@/types';
 import { formatDate } from '@/utils/formatters';
 import { handleApiError, showSuccess } from '@/utils/errorHandling';
+import toast from 'react-hot-toast';
+
 
 /**
  * ReadingLists page component
@@ -25,7 +27,6 @@ export function ReadingLists() {
   const loadLists = async () => {
     setIsLoading(true);
     try {
-      // TODO: Replace with DynamoDB query
       const data = await getReadingLists();
       setLists(data);
     } catch (error) {
@@ -37,14 +38,13 @@ export function ReadingLists() {
 
   const handleCreateList = async () => {
     if (!newListName.trim()) {
-      alert('Please enter a list name');
+      toast.error('Please enter a list name');
       return;
     }
 
     try {
-      // TODO: Replace with DynamoDB put operation
       const newList = await createReadingList({
-        userId: '1', // TODO: Get from auth context
+        userId: '1', 
         name: newListName,
         description: newListDescription,
         bookIds: [],

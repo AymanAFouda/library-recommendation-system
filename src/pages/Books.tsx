@@ -23,7 +23,6 @@ export function Books() {
     setIsLoading(true);
     try {
       const data = await getBooks();
-      console.log("API DATA", data)
       setBooks(data);
       setFilteredBooks(data);
     } catch (error) {
@@ -49,10 +48,8 @@ export function Books() {
     setFilteredBooks(filtered);
   };
 
-  // TODO: Implement sort functionality
   const handleSort = (value: string) => {
     setSortBy(value);
-    // Add sorting logic here
   };
 
   if (isLoading) {

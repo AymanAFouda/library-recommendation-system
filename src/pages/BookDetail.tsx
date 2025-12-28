@@ -6,6 +6,8 @@ import { getBook } from '@/services/api';
 import { Book } from '@/types';
 import { formatRating } from '@/utils/formatters';
 import { handleApiError } from '@/utils/errorHandling';
+import toast from 'react-hot-toast';
+
 
 /**
  * BookDetail page component
@@ -39,9 +41,12 @@ export function BookDetail() {
     }
   };
 
-  // TODO: Implement add to reading list functionality
   const handleAddToList = () => {
-    alert('Add to reading list functionality coming soon!');
+    toast.error('Add to reading list functionality coming soon!');
+  };
+
+  const handleWriteReview = () => {
+    toast.error('Write a review functionality coming soon!');
   };
 
   if (isLoading) {
@@ -166,7 +171,7 @@ export function BookDetail() {
                   </svg>
                   Add to Reading List
                 </Button>
-                <Button variant="outline" size="lg">
+                <Button variant="outline" size="lg" onClick={handleWriteReview}>
                   <svg
                     className="w-5 h-5 mr-2 inline"
                     fill="none"

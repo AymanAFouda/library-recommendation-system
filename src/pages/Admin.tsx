@@ -6,6 +6,8 @@ import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { getBooks, createBook, deleteBook } from '@/services/api';
 import { Book } from '@/types';
 import { handleApiError, showSuccess } from '@/utils/errorHandling';
+import toast from 'react-hot-toast';
+
 
 /**
  * Admin page component for managing books and viewing metrics
@@ -43,12 +45,11 @@ export function Admin() {
 
   const handleCreateBook = async () => {
     if (!newBook.title || !newBook.author) {
-      alert('Please fill in required fields');
+      toast.error('Please fill in required fields');
       return;
     }
 
     try {
-      // TODO: Replace with Lambda API call
       const created = await createBook(newBook);
       setBooks([...books, created]);
       setIsModalOpen(false);
@@ -65,13 +66,16 @@ export function Admin() {
     }
 
     try {
-      // TODO: Replace with Lambda API call
-      await deleteBook();
+      await deleteBook(id);
       setBooks(books.filter((book) => book.id !== id));
-      showSuccess('Book deleted successfully!');
+      toast.success('Book deleted successfully!');
     } catch (error) {
       handleApiError(error);
     }
+  };
+
+  const handleEditBook = () => {
+    toast.error("Edit book functionality coming soon!");
   };
 
   const resetForm = () => {
@@ -150,7 +154,7 @@ export function Admin() {
                     <td className="py-3 px-4">{book.rating}</td>
                     <td className="py-3 px-4">
                       <div className="flex gap-2">
-                        <Button variant="secondary" size="sm">
+                        <Button variant="secondary" size="sm" onClick={() => handleEditBook()}>
                           Edit
                         </Button>
                         <Button
