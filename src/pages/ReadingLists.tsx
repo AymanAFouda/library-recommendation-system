@@ -16,6 +16,7 @@ import toast from 'react-hot-toast';
 export function ReadingLists() {
   const [lists, setLists] = useState<ReadingList[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newListName, setNewListName] = useState('');
   const [newListDescription, setNewListDescription] = useState('');
@@ -42,6 +43,8 @@ export function ReadingLists() {
       return;
     }
 
+    setIsCreating(true);
+
     try {
       const newList = await createReadingList({
         userId: '1', 
@@ -56,6 +59,8 @@ export function ReadingLists() {
       showSuccess('Reading list created successfully!');
     } catch (error) {
       handleApiError(error);
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -147,8 +152,8 @@ export function ReadingLists() {
             </div>
 
             <div className="flex gap-3">
-              <Button variant="primary" onClick={handleCreateList} className="flex-1">
-                Create List
+              <Button variant="primary" onClick={handleCreateList} className="flex-1" disabled={isCreating}>
+                {isCreating? 'creating...' : 'Create List'}
               </Button>
               <Button variant="secondary" onClick={() => setIsModalOpen(false)} className="flex-1">
                 Cancel
