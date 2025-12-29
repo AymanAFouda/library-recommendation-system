@@ -50,7 +50,7 @@ export function Button({
   const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 
   return (
-    <button className={classes} disabled={disabled} {...props}>
+    <button type="button" className={classes} disabled={disabled} {...props}>
       {children}
     </button>
   );
