@@ -12,12 +12,15 @@ import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
 import { Admin } from './pages/Admin';
 import { NotFound } from './pages/NotFound';
+import { Toaster } from 'react-hot-toast'
 
 /**
  * Main App component with routing and layout
  */
 function App() {
   return (
+    <>
+    <Toaster position="top-right"/>
     <BrowserRouter>
       <AuthProvider>
         <div className="flex flex-col min-h-screen">
@@ -53,6 +56,7 @@ function App() {
         </div>
       </AuthProvider>
     </BrowserRouter>
+    </>
   );
 }
 
