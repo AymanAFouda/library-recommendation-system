@@ -75,7 +75,7 @@ export function Admin() {
   };
 
   const handleEditBook = () => {
-    alert("Edit book functionality coming soon!");
+    toast.error("Edit book functionality coming soon!");
   };
 
   const resetForm = () => {
@@ -154,7 +154,7 @@ export function Admin() {
                     <td className="py-3 px-4">{book.rating}</td>
                     <td className="py-3 px-4">
                       <div className="flex gap-2">
-                        <Button variant="secondary" size="sm" onClick={() => handleEditBook()}>
+                        <Button variant="secondary" size="sm" onClick={handleEditBook}>
                           Edit
                         </Button>
                         <Button
