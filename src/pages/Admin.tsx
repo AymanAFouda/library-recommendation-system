@@ -75,7 +75,7 @@ export function Admin() {
   };
 
   const handleEditBook = () => {
-    toast.error("Edit book functionality coming soon!");
+    alert("Edit book functionality coming soon!");
   };
 
   const resetForm = () => {
