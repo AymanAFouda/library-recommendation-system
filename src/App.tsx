@@ -19,10 +19,9 @@ import { Toaster } from 'react-hot-toast'
  */
 function App() {
   return (
-    <>
-    <Toaster position="top-right"/>
     <BrowserRouter>
       <AuthProvider>
+          <Toaster position="top-right"/>
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="flex-1">
@@ -56,7 +55,6 @@ function App() {
         </div>
       </AuthProvider>
     </BrowserRouter>
-    </>
   );
 }
 
