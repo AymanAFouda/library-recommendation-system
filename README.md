@@ -1,6 +1,251 @@
+## Live Application URL
+
+URL: https://d3im70g458lr23.cloudfront.net/
+
+-----
+
+## Team Member Contributions
+
+
+
+
+-----
+
+## Setup Instructions
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm
+- Git
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/AymanAFouda/library-recommendation-system.git
+cd library-recommendation-system
+```
+
+### install dependencies
+
+```bash
+npm install
+```
+
+### Environment Configuration
+
+create a .env file and provide the required environment variables:
+
+- VITE_API_BASE_URL=http://api-url/api
+- VITE_AWS_REGION=us-east-1
+- VITE_COGNITO_USER_POOL_ID=your-user-pool-id
+- VITE_COGNITO_CLIENT_ID=your-client-id
+
+### Run the Application
+
+```bash
+npm run dev
+```
+
+The application will be available at: http://localhost:5173
+
+-----
+
+## API Endpoints Documentation
+
+Library Management System – API Documentation
+
+Base URL:
+https://ed4n9ey4s8.execute-api.us-east-1.amazonaws.com/dev
+
+Protocol: HTTPS
+
+Authentication: Amazon Cognito User Pools (JWT in Authorization header)
+
+Data Format: JSON
+
+Architecture: Serverless (API Gateway + Lambda proxy integration)
+
+## Authentication & Authorization
+
+Most write and user-specific endpoints are protected using a Cognito User Pool Authorizer.
+
+The client must send a valid JWT access token in the HTTP header:
+
+Authorization: Bearer <JWT_TOKEN>
+
+Public endpoints (e.g. retrieving books) do not require authentication.
+
+Admin-only actions (creating/deleting books) require authenticated 
+users with elevated permissions (handled via Cognito).
+
+## API Endpoints
+
+### Books API
+
+**Get All Books**
+
+Endpoint: GET /books
+
+Description: Retrieves a list of all books available in the library.
+
+Authentication: Not required.
+
+Response (200 OK): Returns a JSON array of book objects.
+
+**Create a Book (Admin Only)**
+
+Endpoint: POST /books
+
+Description: Creates a new book entry in the system. 
+This endpoint is restricted to authenticated admin users.
+
+Authentication: Required (Cognito).
+
+Request Body (JSON):
+
+{
+  "title": "string",
+  "author": "string",
+  "genre": "string",
+  "description": "string",
+  "coverImage": "string",
+  "rating": number,
+  "publishedYear": number,
+  "isbn": "string"
+}
+
+Response (201 Created): Returns the created book object, including a generated id.
+
+**Get Book by ID**
+
+Endpoint: GET /books/{id}
+
+Description: Retrieves details of a single book using its unique identifier.
+
+Path Parameters: id (string) – Book ID
+
+Authentication: Not required.
+
+Response (200 OK): Returns a JSON object representing the book.
+
+Error Responses: 404 Not Found – Book does not exist
+
+**Delete Book (Admin Only)**
+
+Endpoint: DELETE /books/{id}
+
+Description: Deletes a book from the system by its ID.
+
+Path Parameters: id (string) – Book ID
+
+Authentication: Required (Cognito).
+
+Response: 204 No Content – Book deleted successfully
+
+### Reading Lists API
+
+**Get User Reading Lists**
+
+Endpoint: GET /reading-lists
+
+Description: Retrieves all reading lists belonging to the authenticated user.
+
+Authentication: Required (Cognito).
+
+Response (200 OK): Returns a JSON array of reading lists.
+
+**Create Reading List**
+
+Endpoint: POST /reading-lists
+
+Description: Creates a new reading list for the authenticated user.
+
+Authentication: Required (Cognito).
+
+Request Body (JSON):
+
+{
+  "name": "string",
+  "description": "string",
+  "bookIds": ["string"]
+}
+
+Response (201 Created): Returns the newly created reading list object.
+
+**Update Reading List**
+
+Endpoint: PUT /reading-lists/{id}
+
+Description: Updates an existing reading list. 
+Only allowed fields (name, description, bookIds) can be modified.
+
+Path Parameters: id (string) – Reading list ID
+
+Authentication: Required (Cognito).
+
+Request Body (JSON – partial allowed):
+
+{
+  "name": "string",
+  "description": "string",
+  "bookIds": ["string"]
+}
+
+Response (200 OK): Returns the updated reading list object.
+
+**Delete Reading List**
+
+Endpoint: DELETE /reading-lists/{id}
+
+Description: Deletes a reading list belonging to the authenticated user.
+
+Path Parameters: id (string) – Reading list ID
+
+Authentication: Required (Cognito).
+
+Response (200 OK)
+
+{
+  "message": "Reading list deleted successfully"
+}
+
+### Recommendations API
+
+**Get Book Recommendations**
+
+Endpoint: POST /recommendations
+
+Description: Returns personalized book recommendations for the authenticated user.
+
+Authentication: Required (Cognito).
+
+Response (200 OK): Returns a list of recommended books.
+
+## CORS Support
+
+All endpoints support Cross-Origin Resource Sharing (CORS) with:
+
+Access-Control-Allow-Origin: *
+
+Access-Control-Allow-Methods configured per resource
+
+OPTIONS preflight requests enabled
+
+## Security & Transport
+
+TLS Policy: TLS 1.3
+
+Authorization: JWT via Cognito User Pools
+
+Backend Integration: AWS Lambda (proxy integration)
+
+-----
+
 # Library Recommendation System
 
 An AI-powered library book recommendation system built with React, TypeScript, Tailwind CSS, and AWS serverless architecture. This is a 4-week intensive project for CENG413 Software Quality Standards course.
+
+---
 
 ## 🎯 Project Overview
 
