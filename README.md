@@ -7,10 +7,10 @@ URL: https://d3im70g458lr23.cloudfront.net/
 ## Team Member Contributions
 
 Team members:
-Ayman Fouda - 220218320
-Salah Al Baik - 220218371
-Yousef Kitaz - 220218340
-Abdullah Al-salami - 220218449
+- Ayman Fouda - 220218320
+- Salah Al Baik - 220218371
+- Yousef Kitaz - 220218340
+- Abdullah Al-salami - 220218449
 
 All team members worked collaboratively on the design and development of this project. The team jointly participated in system planning, architectural design, and discussions around technology choices. Implementation tasks, documentation, testing, and deployment were completed through continuous collaboration and knowledge sharing.
 
