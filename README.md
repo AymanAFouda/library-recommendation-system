@@ -87,7 +87,7 @@ users with elevated permissions (handled via Cognito).
 
 ### Books API
 
-**Get All Books**
+#### Get All Books
 
 Endpoint: GET /books
 
@@ -97,7 +97,7 @@ Authentication: Not required.
 
 Response (200 OK): Returns a JSON array of book objects.
 
-**Create a Book (Admin Only)**
+#### Create a Book (Admin Only)
 
 Endpoint: POST /books
 
@@ -121,7 +121,7 @@ Request Body (JSON):
 
 Response (201 Created): Returns the created book object, including a generated id.
 
-**Get Book by ID**
+#### Get Book by ID
 
 Endpoint: GET /books/{id}
 
@@ -135,7 +135,7 @@ Response (200 OK): Returns a JSON object representing the book.
 
 Error Responses: 404 Not Found – Book does not exist
 
-**Delete Book (Admin Only)**
+#### Delete Book (Admin Only)
 
 Endpoint: DELETE /books/{id}
 
@@ -149,7 +149,7 @@ Response: 204 No Content – Book deleted successfully
 
 ### Reading Lists API
 
-**Get User Reading Lists**
+#### Get User Reading Lists
 
 Endpoint: GET /reading-lists
 
@@ -159,7 +159,7 @@ Authentication: Required (Cognito).
 
 Response (200 OK): Returns a JSON array of reading lists.
 
-**Create Reading List**
+#### Create Reading List
 
 Endpoint: POST /reading-lists
 
@@ -177,7 +177,7 @@ Request Body (JSON):
 
 Response (201 Created): Returns the newly created reading list object.
 
-**Update Reading List**
+#### Update Reading List
 
 Endpoint: PUT /reading-lists/{id}
 
@@ -198,7 +198,7 @@ Request Body (JSON – partial allowed):
 
 Response (200 OK): Returns the updated reading list object.
 
-**Delete Reading List**
+#### Delete Reading List
 
 Endpoint: DELETE /reading-lists/{id}
 
@@ -216,7 +216,7 @@ Response (200 OK)
 
 ### Recommendations API
 
-**Get Book Recommendations**
+#### Get Book Recommendations
 
 Endpoint: POST /recommendations
 
